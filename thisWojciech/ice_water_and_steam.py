@@ -4,17 +4,7 @@ Arcade Starting Template
 import arcade
 import timeit
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 450
-SCREEN_TITLE = "Ice, water and steam!"
-
-# Change default values
-SCREEN_RESIZABLE = False
-SCREEN_FULLSCREEN = False
-VISIBLE_MOUSE = True
-# 1/60 means constant 60 fps
-SCREEN_UPDATE_RATE = 1/60
-
+from thisWojciech import objects, options
 
 class MyGame(arcade.Window):
     """
@@ -33,7 +23,7 @@ class MyGame(arcade.Window):
         self.frame_count = 0
         self.fps_start_timer = None
         self.fps = None
-        self.set_mouse_visible(VISIBLE_MOUSE)
+        self.set_mouse_visible(options.allow_visible_mouse)
         self.font_color=arcade.color.WHITE_SMOKE
         arcade.set_background_color(arcade.color.BLEU_DE_FRANCE)
 
@@ -42,8 +32,8 @@ class MyGame(arcade.Window):
 
     def setup(self):
         # Create your sprites and sprite lists here
-        if SCREEN_UPDATE_RATE is not None:
-            self.set_update_rate(SCREEN_UPDATE_RATE)
+        if options.screen_update_rate is not None:
+            self.set_update_rate(options.screen_update_rate)
 
     def calculate_fps(self):
         if self.frame_count % 60 == 0:
@@ -62,18 +52,18 @@ class MyGame(arcade.Window):
 
     def on_draw_hud(self, draw_start_time):
         output = f"Running time: {self.format_time(self.running_time)}"
-        arcade.draw_text(output, 10, (SCREEN_HEIGHT-20), self.font_color, 16)
+        arcade.draw_text(output, 10, (self.height-20), self.font_color, 16)
 
         # Display timings
         output = f"Processing time: {self.processing_time:.3f}"
-        arcade.draw_text(output, 10, (SCREEN_HEIGHT-40), self.font_color, 16)
+        arcade.draw_text(output, 10, (self.height-40), self.font_color, 16)
 
         output = f"Drawing time: {self.draw_time:.3f}"
-        arcade.draw_text(output, 10 , (SCREEN_HEIGHT-60), self.font_color, 16)
+        arcade.draw_text(output, 10 , (self.height-60), self.font_color, 16)
 
         if self.fps is not None:
             output = f"FPS: {self.fps:.0f}"
-            arcade.draw_text(output, 10 , (SCREEN_HEIGHT-80), self.font_color, 16)
+            arcade.draw_text(output, 10 , (self.height-80), self.font_color, 16)
 
         self.draw_time = timeit.default_timer() - draw_start_time
 
@@ -150,12 +140,12 @@ class MyGame(arcade.Window):
 
 def main():
     """ Main method """
-    game = MyGame(SCREEN_WIDTH,
-                  SCREEN_HEIGHT,
-                  SCREEN_TITLE,
-                  SCREEN_FULLSCREEN,
-                  SCREEN_RESIZABLE,
-                  SCREEN_UPDATE_RATE)
+    game = MyGame(options.screen_width,
+                  options.screen_height,
+                  options.game_title,
+                  options.start_fullscreen,
+                  options.allow_resizable_window,
+                  options.screen_update_rate)
     game.setup()
     arcade.run()
 
