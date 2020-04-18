@@ -6,7 +6,7 @@ import timeit
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 450
-SCREEN_TITLE = "Running with magic"
+SCREEN_TITLE = "Ice, water and steam!"
 
 # Change default values
 SCREEN_RESIZABLE = False
