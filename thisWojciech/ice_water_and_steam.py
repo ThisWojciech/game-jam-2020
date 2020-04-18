@@ -4,9 +4,10 @@ Arcade Starting Template
 import arcade
 import timeit
 
-from thisWojciech import objects, options
+from thisWojciech import objects, options, scenes, console
 
-class MyGame(arcade.Window):
+
+class IceWaterSteam(arcade.Window):
     """
     Main application class.
     NOTE: Go ahead and delete the methods you don't need.
@@ -24,16 +25,38 @@ class MyGame(arcade.Window):
         self.fps_start_timer = None
         self.fps = None
         self.set_mouse_visible(options.allow_visible_mouse)
-        self.font_color=arcade.color.WHITE_SMOKE
-        arcade.set_background_color(arcade.color.BLEU_DE_FRANCE)
+        self.font_color=arcade.color.BLACK
 
-        # If you have sprite lists, you should create them here,
-        # and set them to None
+        # Scene initializations:
+        self.intro_view = None
+        self.screen_view = None
+        self.logs = None
+        # Scenes Sprite lists
+        self.intro_sprite_list = None
+        self.screen_sprite_list = None
+        # All variables:
+        self.developer_mode = None
+        self.current_scene = None
 
     def setup(self):
         # Create your sprites and sprite lists here
         if options.screen_update_rate is not None:
             self.set_update_rate(options.screen_update_rate)
+        # Scene initializations:
+        self.intro_view = scenes.Intro()
+        self.screen_view = scenes.Screen()
+        self.logs = console.LogSystem()
+        # Sprite lists
+        self.intro_sprite_list = arcade.SpriteList()
+        self.screen_sprite_list = arcade.SpriteList()
+        # All variables:
+        self.developer_mode = options.developermode
+        self.current_scene = options.get_start_scene(self, options.skip_intro)
+        arcade.set_background_color(arcade.color.LAVENDER_GRAY)
+        # All setups:
+        self.intro_view.setup(self.current_scene)
+        self.screen_view.setup(self.current_scene)
+        self.logs.setup(self.current_scene)
 
     def calculate_fps(self):
         if self.frame_count % 60 == 0:
@@ -50,29 +73,21 @@ class MyGame(arcade.Window):
         total_time_string = f"{total_time_hou:02d}:{total_time_min:02d}:{total_time_sec:02d}"
         return total_time_string
 
-    def on_draw_hud(self, draw_start_time):
-        output = f"Running time: {self.format_time(self.running_time)}"
-        arcade.draw_text(output, 10, (self.height-20), self.font_color, 16)
-
-        # Display timings
-        output = f"Processing time: {self.processing_time:.3f}"
-        arcade.draw_text(output, 10, (self.height-40), self.font_color, 16)
-
-        output = f"Drawing time: {self.draw_time:.3f}"
-        arcade.draw_text(output, 10 , (self.height-60), self.font_color, 16)
-
-        if self.fps is not None:
-            output = f"FPS: {self.fps:.0f}"
-            arcade.draw_text(output, 10 , (self.height-80), self.font_color, 16)
-
-        self.draw_time = timeit.default_timer() - draw_start_time
 
     def on_draw(self):
         # Start timing how long this takes
         draw_start_time = timeit.default_timer()
         self.calculate_fps()
         arcade.start_render()
-        self.on_draw_hud(draw_start_time)
+        self.screen_view.on_draw(self._mouse_x, self._mouse_y)
+        self.screen_view.on_draw_developer_mode(self.developer_mode,
+                                                self.width, self.height,
+                                                self.logs.timer.get_time_string(),
+                                                self.logs.timer.get_fps(), self.current_scene)
+        self.intro_view.on_draw()
+
+        # Count time and fps only in developer mode
+        self.logs.timer.fps_tick()
         arcade.finish_render()
 
     def set_viewport(self, left, right, bottom, top):
@@ -88,9 +103,10 @@ class MyGame(arcade.Window):
         Normally, you'll call update() on the sprite lists that
         need it.
         """
-        self.running_time += delta_time
-        draw_start_time = timeit.default_timer()
-        self.processing_time = timeit.default_timer() - draw_start_time
+        self.intro_view.update()
+        self.screen_view.update()
+        # totalTime increase logic:
+        self.logs.timer.time_tick(delta_time)
 
     def on_resize(self, width: float, height: float):
         """
@@ -105,7 +121,13 @@ class MyGame(arcade.Window):
         For a full list of keys, see:
         http://arcade.academy/arcade.key.html
         """
-        pass
+        if key == options.key_developer_mode:
+            if self.developer_mode:
+                self.developer_mode = False
+                self.logs.log('developer mode OFF', -1, -1)
+            else:
+                self.developer_mode = True
+                self.logs.log('developer mode ON', -1, -1)
 
     def on_key_release(self, key, key_modifiers):
         """
@@ -140,7 +162,7 @@ class MyGame(arcade.Window):
 
 def main():
     """ Main method """
-    game = MyGame(options.screen_width,
+    game = IceWaterSteam(options.screen_width,
                   options.screen_height,
                   options.game_title,
                   options.start_fullscreen,
