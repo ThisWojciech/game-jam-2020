@@ -1,11 +1,12 @@
 import arcade
-
+from thisWojciech import objects, options
 
 class Scene:
     def __init__(self):
         self._current_scene_ = None
 
 
+# Display this scene only on-startup
 class Intro(Scene):
     def __init__(self):
         super().__init__()
@@ -22,6 +23,7 @@ class Intro(Scene):
         pass
 
 
+# Always display this scene
 class Screen(Scene):
     def __init__(self):
         super().__init__()
@@ -30,8 +32,12 @@ class Screen(Scene):
         self.mouse_position_x = 0
         self.mouse_position_y = 0
 
+        # Static objects (always on screen)
+
     def setup(self, current_scene):
         self._current_scene = current_scene
+
+        # Static objects (always on screen)
 
     def draw_cursor(self, position_x, position_y):
         self.mouse_position_x = position_x
@@ -39,6 +45,7 @@ class Screen(Scene):
 
     def on_draw(self, mouse_x, mouse_y):
         self.draw_cursor(mouse_x, mouse_y)
+        objects.draw_terrain_line(0, options.screen_height/3, options.screen_width, options.screen_height/3, arcade.color.BLACK)
 
     def on_draw_developer_mode(self, mode_switch, width, height, engine_time, engine_fps, current_scene, logs):
         if mode_switch:

@@ -124,10 +124,10 @@ class IceWaterSteam(arcade.Window):
         if key == options.key_developer_mode:
             if self.developer_mode:
                 self.developer_mode = False
-                self.logs.log('developer mode OFF')
+                self.logs.log('Developer mode OFF')
             else:
                 self.developer_mode = True
-                self.logs.log('developer mode ON')
+                self.logs.log('Developer mode ON')
 
     def on_key_release(self, key, key_modifiers):
         """
