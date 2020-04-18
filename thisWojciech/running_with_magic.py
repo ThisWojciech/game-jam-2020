@@ -5,11 +5,11 @@ import arcade
 import timeit
 
 SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_HEIGHT = 450
 SCREEN_TITLE = "Running with magic"
 
 # Change default values
-SCREEN_RESIZABLE = True
+SCREEN_RESIZABLE = False
 SCREEN_FULLSCREEN = False
 VISIBLE_MOUSE = True
 # 1/60 means constant 60 fps
