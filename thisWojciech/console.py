@@ -37,18 +37,23 @@ class LogSystem:
     def __init__(self):
         self._current_scene = None
         self.timer = TimeCounter()
+        self.current_events = []
+        self.current_event = 0
+        self.console_message = 'Error, no console message'
 
     def setup(self, current_scene):
         self._current_scene = current_scene
+        self.current_events = ['00:00:00 Freezing ice ', '00:00:00 Water mixing', '00:00:00 Sprites? Who cares?',
+                               '00:00:01 Pairing in progress']
 
-    def log(self, event, x, y):
+    def log(self, event):
         engine_time = self.timer.get_time_string()
-        known_events = {0: 'windowResized',
-                        1: 'fullscreenMode'}
-
-        if event == known_events[0]:
-            print(f"{engine_time} Window resized to: {x}, {y}")
-        if event == known_events[1]:
-            print(f"{engine_time} Resolution changed to: {x}x{y}")
-        if x == -1 and y == -1:
-            print(f"{engine_time} {event}")
+        if event:
+            if self.current_event < 3:
+                self.current_event += 1
+            else:
+                self.current_event = 0
+            self.console_message = f"{engine_time} {event}"
+            print(self.console_message)
+            self.current_events[self.current_event] = self.console_message
+            self.current_events.sort()

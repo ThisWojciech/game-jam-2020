@@ -83,7 +83,7 @@ class IceWaterSteam(arcade.Window):
         self.screen_view.on_draw_developer_mode(self.developer_mode,
                                                 self.width, self.height,
                                                 self.logs.timer.get_time_string(),
-                                                self.logs.timer.get_fps(), self.current_scene)
+                                                self.logs.timer.get_fps(), self.current_scene, self.logs.current_events)
         self.intro_view.on_draw()
 
         # Count time and fps only in developer mode
@@ -124,10 +124,10 @@ class IceWaterSteam(arcade.Window):
         if key == options.key_developer_mode:
             if self.developer_mode:
                 self.developer_mode = False
-                self.logs.log('developer mode OFF', -1, -1)
+                self.logs.log('developer mode OFF')
             else:
                 self.developer_mode = True
-                self.logs.log('developer mode ON', -1, -1)
+                self.logs.log('developer mode ON')
 
     def on_key_release(self, key, key_modifiers):
         """

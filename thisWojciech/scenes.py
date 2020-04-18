@@ -5,6 +5,7 @@ class Scene:
     def __init__(self):
         self._current_scene_ = None
 
+
 class Intro(Scene):
     def __init__(self):
         super().__init__()
@@ -39,15 +40,20 @@ class Screen(Scene):
     def on_draw(self, mouse_x, mouse_y):
         self.draw_cursor(mouse_x, mouse_y)
 
-    def on_draw_developer_mode(self, mode_switch, width, height, engine_time, engine_fps, current_scene):
+    def on_draw_developer_mode(self, mode_switch, width, height, engine_time, engine_fps, current_scene, logs):
         if mode_switch:
             # DEVELOPER MODE: Draw totalTime/FPS/sysInfo:
-            arcade.draw_text(f"Time: {engine_time}", 50, height - 20, arcade.color.BLACK, 12, )
-            arcade.draw_text(f"FPS: {engine_fps:3.0f}", 50, height - 40, arcade.color.BLACK, 12)
+            arcade.draw_text(f"Time: {engine_time}", 10, height - 20, arcade.color.BLACK, 12, )
+            arcade.draw_text(f"FPS: {engine_fps:3.0f}", 10, height - 40, arcade.color.BLACK, 12)
             # DEVELOPER MODE: Draw mouse positions (screen + map tile)
             arcade.draw_text(f"Position: {self.mouse_position_x:3.0f}/{width:3.0f},"
-                             f"{self.mouse_position_y:3.0f}/{height:3.0f}", 50, height - 60, arcade.color.BLACK, 12)
-            arcade.draw_text(f"Scene: {current_scene}", 50, height - 80, arcade.color.BLACK, 12, )
+                             f"{self.mouse_position_y:3.0f}/{height:3.0f}", 10, height - 60, arcade.color.BLACK, 12)
+            arcade.draw_text(f"Scene: {current_scene}", 10, height - 80, arcade.color.BLACK, 12, )
+            # Logs: Display last 4 logs:
+            arcade.draw_text(f"{logs[0]}", 300, height - 20, arcade.color.BLACK, 12, )
+            arcade.draw_text(f"{logs[1]}", 300, height - 40, arcade.color.BLACK, 12, )
+            arcade.draw_text(f"{logs[2]}", 300, height - 60, arcade.color.BLACK, 12, )
+            arcade.draw_text(f"{logs[3]}", 300, height - 80, arcade.color.BLACK, 12, )
         else:
             pass
 
