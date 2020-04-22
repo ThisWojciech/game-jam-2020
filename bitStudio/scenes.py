@@ -1,5 +1,5 @@
 import arcade
-from thisWojciech import objects, options
+from bitStudio import objects, options
 
 class Scene:
     def __init__(self):
