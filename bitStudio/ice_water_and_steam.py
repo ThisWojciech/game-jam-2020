@@ -4,7 +4,7 @@ Arcade Starting Template
 import arcade
 import timeit
 
-from thisWojciech import objects, options, scenes, console
+from bitStudio import objects, options, scenes, console
 
 
 class IceWaterSteam(arcade.Window):
