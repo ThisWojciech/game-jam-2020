@@ -36,6 +36,7 @@ class IceWaterSteam(arcade.Window):
         self.screen_sprite_list = None
         # All variables:
         self.developer_mode = None
+        self.quit_game = None
         self.current_scene = None
 
     def setup(self):
@@ -51,6 +52,7 @@ class IceWaterSteam(arcade.Window):
         self.screen_sprite_list = arcade.SpriteList()
         # All variables:
         self.developer_mode = options.developermode
+        self.quit_game = False
         self.current_scene = options.get_start_scene(self, options.skip_intro)
         arcade.set_background_color(arcade.color.LAVENDER_GRAY)
         # All setups:
@@ -107,6 +109,9 @@ class IceWaterSteam(arcade.Window):
         self.screen_view.update()
         # totalTime increase logic:
         self.logs.timer.time_tick(delta_time)
+        # Quit game
+        if self.quit_game:
+            self.close()
 
     def on_resize(self, width: float, height: float):
         """
@@ -128,6 +133,9 @@ class IceWaterSteam(arcade.Window):
             else:
                 self.developer_mode = True
                 self.logs.log('Developer mode ON')
+        if key == options.key_quit_game:
+            self.quit_game = True
+            self.logs.log('Player quited game')
 
     def on_key_release(self, key, key_modifiers):
         """
