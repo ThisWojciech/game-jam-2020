@@ -1,6 +1,7 @@
 import arcade
 from bitStudio import objects, options
 
+
 class Scene:
     def __init__(self):
         self._current_scene_ = None

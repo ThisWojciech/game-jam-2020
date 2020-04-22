@@ -19,10 +19,9 @@ class TimeCounter:
         self.total_time += time_beta
 
     def get_time_string(self):
-        total_time_hou = int(self.total_time) // 3600
         total_time_min = int(self.total_time) // 60
         total_time_sec = int(self.total_time) % 60
-        total_time_string = f"{total_time_hou:02d}:{total_time_min:02d}:{total_time_sec:02d}"
+        total_time_string = f"{total_time_min:02d}:{total_time_sec:02d}"
         return total_time_string
 
     def get_fps(self):

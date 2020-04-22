@@ -22,6 +22,7 @@ developermode = True
 gridScreenStart = 0
 gridScreenStep = 50
 
+
 def get_start_scene(self, check_no_intro):
     if skip_intro:
         _start_scene = game_scene[1]
@@ -31,3 +32,4 @@ def get_start_scene(self, check_no_intro):
 
 # Default keybindings
 key_developer_mode = arcade.key.BACKSPACE
+key_quit_game = arcade.key.ESCAPE
